@@ -1,0 +1,39 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_NAME=prototype
+      - POSTGRES_USER=admin
+
+  web:
+    build: 
+      context: .
+    command: fastapi run
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_PASSWORD=123456
+      - DATABASE_NAME=prototype
+      - DATABASE_USER=admin
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+  
