@@ -1,4 +1,3 @@
-from openai import OpenAI
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain_text_splitters import CharacterTextSplitter
@@ -8,13 +7,13 @@ from langchain.chains.question_answering import load_qa_chain
 #from langchain_community.llms import OpenAI as llmopenai
 #from langchain_openai import OpenAI as llmopenai
 from langchain_openai import ChatOpenAI
-from langchain_core.documents import Document
-from langchain.chains import LLMChain, StuffDocumentsChain
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+# from langchain_core.documents import Document
+# from langchain.chains import LLMChain, StuffDocumentsChain
+# from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain.callbacks import get_openai_callback
 
 import langchain
-import pandas as pd
+# import pandas as pd
 import streamlit as st 
 import os
 import getpass
@@ -65,7 +64,7 @@ def main():
             st.stop()
         if query: 
             docs = knowledgeBase.similarity_search(query)
-            llm = ChatOpenAI(os.getenv("OPENAI_API_KEY"), model = 'gpt-4o-mini')
+            llm = ChatOpenAI(api_key=os.getenv("OPENAI_API_KEY"), model = 'gpt-4o-mini')
             #llm = llmopenai(openai_api_key=os.getenv('OPENAI_API_KEY'))
             chain = load_qa_chain(llm, chain_type="stuff")
 
